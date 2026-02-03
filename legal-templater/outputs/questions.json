@@ -1,0 +1,14 @@
+[
+  {
+    "variable_key": "agreement_date",
+    "question": "What is the date of the agreement?"
+  },
+  {
+    "variable_key": "company_name",
+    "question": "What is the name of the Company?"
+  },
+  {
+    "variable_key": "contractor_name",
+    "question": "What is the name of the Contractor?"
+  }
+]

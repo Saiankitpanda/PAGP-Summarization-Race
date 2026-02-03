@@ -1,0 +1,65 @@
+{
+    "template": "SERVICE AGREEMENT\n\nThis AGREEMENT is made on {{agreement_date}}.\n\nBETWEEN:\n{{company_name}}, a company incorporated under the laws of {{company_jurisdiction}}, with its registered office at {{company_address}} (hereinafter \"Company\")\nAND\n{{contractor_name}}, an individual residing at {{contractor_address}} (hereinafter \"Contractor\").\n\nWHEREAS the Company desires to engage the Contractor for {{service_description}}, and the Contractor agrees to provide such services.\n\nNOW THEREFORE, the parties agree as follows:\n\n1. SERVICES\nThe Contractor shall provide the following services:\n- {{scope_of_work}}\n\n2. FEES\nThe Company shall pay the Contractor a fixed fee of {{fee_amount}} upon completion of the milestones.\n\n3. TERM\nThis Agreement shall commence on {{start_date}} and terminate on {{end_date}}.\n\n4. GOVERNING LAW\nThis Agreement shall be governed by the laws of the State of {{governing_law}}.\n\nIN WITNESS WHEREOF, the parties have executed this Agreement.\n\nSigned:\n________________\n{{company_name}}\n\nSigned:\n________________\n{{contractor_name}}",
+    "variables": [
+        {
+            "key": "agreement_date",
+            "label": "Agreement Date",
+            "required": true
+        },
+        {
+            "key": "company_name",
+            "label": "Company Name",
+            "required": true
+        },
+        {
+            "key": "company_jurisdiction",
+            "label": "Company Jurisdiction (State/Country)",
+            "required": false
+        },
+        {
+            "key": "company_address",
+            "label": "Company Address",
+            "required": false
+        },
+        {
+            "key": "contractor_name",
+            "label": "Contractor Name",
+            "required": true
+        },
+        {
+            "key": "contractor_address",
+            "label": "Contractor Address",
+            "required": false
+        },
+        {
+            "key": "service_description",
+            "label": "Description of Services",
+            "required": true
+        },
+        {
+            "key": "scope_of_work",
+            "label": "Scope (Bullet points)",
+            "required": false
+        },
+        {
+            "key": "fee_amount",
+            "label": "Fee Amount (with currency)",
+            "required": true
+        },
+        {
+            "key": "start_date",
+            "label": "Start Date",
+            "required": true
+        },
+        {
+            "key": "end_date",
+            "label": "End Date",
+            "required": true
+        },
+        {
+            "key": "governing_law",
+            "label": "Governing Law State",
+            "required": true
+        }
+    ]
+}
