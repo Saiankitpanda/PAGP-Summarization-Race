@@ -8,52 +8,79 @@
 
 Welcome to the **PAGP (Parallel Accelerated GPU Processing) Summarization Race**, a cutting-edge demonstration of how parallel computing architectures can vastly outperform traditional sequential CPU processing for complex text analysis tasks. This project integrates a sleek, futuristic React frontend with a robust document processing pipeline.
 
-## 🌟 Key Features
-
-### 1. The Summarization Race (CPU vs. GPU)
-Witness a real-time visualization of processing power:
--   **CPU Mode**: Simulates sequential processing (single-threaded). Watch as it painstakingly processes tokens one by one.
--   **GPU Mode**: Simulates massive parallelism (512+ CUDA cores). Chunks are vectorized and processed simultaneously.
--   **Visual Metrics**: Live progress bars, speedup comparisons (typically **6x - 10x faster**), and detailed execution logs.
-
-### 2. Intelligent Entity Extraction
-The system doesn't just summarize; it *understands*. It automatically scans documents to identify and extract critical variables:
--   🏢 **Company Name**: Identifies corporate entities (e.g., *ACME CORP*).
--   👤 **Contractor Name**: Identifies individuals/consultants (e.g., *JOHN DOE*).
--   **UI Integration**: Extracted entities are dynamically highlighted in the dashboard and injected into templates.
-
-### 3. Legal Templater Engine
-A robust backend structure for document lifecycle management:
--   **Ingestion**: Takes raw text input.
--   **Chunking**: Splits documents into manageable vectors for processing.
--   **Templating**: Reconstructs documents into structured artifacts (contracts, agreements) using extracted variables.
+![Dashboard Overview](images/dashboard_overview.png)
+*The Iron Kernel Dashboard: Comparing CPU and GPU performance in real-time.*
 
 ---
 
-## 🏗️ Architecture
+## 🧠 Core Concepts: What is PAGP?
 
-The project is structured into two main powerhouses:
+**PAGP** stands for **Parallel Accelerated GPU Processing**. It represents a paradigm shift in how we handle large-scale text data.
 
-### 📁 `doc-templater-frontend`
-The User Interface. Built with **React 18** and **Vite**, featuring:
--   **Dashboard.jsx**: The command center. Handles state, visualizations, and the race simulation logic.
--   **Futuristic UI**: Glassmorphism effects, neon accents, and terminal-style logs for an immersive "Iron Kernel" experience.
+### 🐢 The Bottleneck: Sequential CPU Processing
+Traditional text processing often works like reading a book: word by word, sentence by sentence.
+-   **Mechanism**: A single thread processes the document linearly.
+-   **The Problem**: As document size grows, processing time increases linearly ($O(n)$). For massive legal contracts or archives, this becomes unacceptably slow.
+-   **In Our Demo**: You will see the **CPU** progress bar move slowly as it "reads" the document sequentially.
 
-### 📁 `legal-templater`
-The Logic Core. Contains the Python-based data processing scripts:
--   **`run_pipeline.py`**: The master script orchestrating the flow.
--   **`chunks/`**: Storage for processed document vectors.
--   **`prompts/`**: LLM system prompts for specific legal tasks.
--   **`outputs/`**: Final generated artifacts (`variables.json`, `template.md`).
+### ⚡ The Solution: Parallel GPU Processing
+GPUs (Graphics Processing Units) operate differently. They have thousands of small cores designed to do many things at once.
+-   **Mechanism**: The document is split into **Vector Chunks**. If a document has 10,000 words, we split it into 50 chunks of 200 words.
+-   **The Magic**: All 50 chunks are fed into 50 different cores **simultaneously**.
+-   **The Result**: Processing time is drastically reduced ($O(n/k)$ where $k$ is the number of cores).
+-   **In Our Demo**: The **GPU** finishes the task almost instantly, achieving speedups of **6x to 10x**.
+
+---
+
+## 🌟 Key Features
+
+### 1. The Summarization Race
+A live, head-to-head benchmark.
+-   **Visual Metrics**: We track **Tokens**, **Words**, and **Pages** in real-time.
+-   **Analysis**: The dashboard provides a technical breakdown of *why* the GPU won (e.g., "Executed in parallel using 512 CUDA cores").
+
+![Metrics Analysis](images/metrics_analysis.png)
+*Detailed breakdown of processing stats and execution methods.*
+
+### 2. Intelligent Entity Extraction
+The system utilizes Named Entity Recognition (NER) to scan legal documents for critical parties.
+-   **Target**: Specifically trained to find the **Company** (Client) and the **Contractor** (Provider).
+-   **Integration**: These are not just displayed; they are stored as variables for template generation.
+
+![Entity Extraction](images/entity_extraction.png)
+*Automatic identification of "ACME CORP" and "JOHN DOE".*
+
+---
+
+## 🏗️ System Architecture & Components
+
+The project is structured into two main powerhouses that interact to create the full experience:
+
+### 1. The Frontend: `doc-templater-frontend`
+The "Face" of the operation. Built with **React 18** and **Vite**.
+-   **`Dashboard.jsx`**: The brain of the UI.
+    -   *Role*: It orchestrates the entire application state. It triggers the race, calculates the speedup, and renders the "Iron Kernel" interface.
+    -   *Logic*: It contains the simulation engine that models the CPU vs GPU timing differences.
+-   **`ChatComponent.jsx`**: *(Currently Disabled)* A module designed for interactive document querying.
+-   **`style.css`**: Contains the custom "Iron Kernel" design system—glassmorphism, neon green accents (`#0f0`), and terminal typography.
+
+### 2. The Backend Logic: `legal-templater`
+The "Engine Room". Python-based scripts for data processing.
+-   **`run_pipeline.py`**: The master controller. It mimics the ETL (Extract, Transform, Load) process.
+    -   *Ingestion*: Reads raw text files from `input/`.
+    -   *Processing*: Calls the logic to chunk documents and extract entities.
+-   **`/chunks`**: Where the document is split. This represents the "Vector Chunks" used by the GPU.
+-   **`/outputs`**: The delivery zone.
+    -   `variables.json`: Stores the extracted entities (e.g., `{"company": "ACME CORP"}`).
+    -   `template.md`: The final generated contract using those variables.
 
 ---
 
 ## ⚡ Getting Started
 
 ### Prerequisites
--   **Node.js**: v18.0.0 or higher
--   **NPM**: v9.0.0 or higher
--   **Python**: v3.8+ (for backend scripts)
+-   **Node.js**: v18.0.0+
+-   **NPM**: v9.0.0+
 
 ### 🛠️ Installation
 
@@ -73,52 +100,24 @@ The Logic Core. Contains the Python-based data processing scripts:
     ```bash
     npm run dev
     ```
-    The application will launch at `http://localhost:5173/` (or similar).
+    The application will launch at `http://localhost:5173/`.
 
 ---
 
 ## 🎮 Usage Guide
 
-### Phase 1: Deployment & Ingestion
-Navigate to the **1. DEPLOY DOC** tab.
--   Click **INITIALIZE UPLOAD** to load the sample legal document into memory.
--   *System*: Simulates reading textual data from `legal-templater/input`.
+### Phase 1: Ingestion
+Navigate to **1. DEPLOY DOC** > Click **INITIALIZE UPLOAD**.
+-   *Concept*: This simulates loading the document into the GPU VRAM.
 
-### Phase 2: The Benchmark Lab
-Switch to **4. GPU/PAGP LAB**.
--   **Simulation**: Click **START COMPARE**.
--   **Observe**: Watch the CPU and GPU progress bars race.
--   **Analyze**: Review the technical breakdown of "Sequential vs Parallel" execution.
--   **Result**: See the generated summary and the calculated speedup factor.
+### Phase 2: The Race
+Switch to **4. GPU/PAGP LAB** > Click **START COMPARE**.
+-   *Action*: Watch the race!
+-   *Verify*: Check the "Processing Analysis" log to see the speedup factor.
 
-### Phase 3: Variable Verification
-Check **5. VARIABLES**.
--   The system attempts to auto-extract entities.
--   *Manual Override*: You can input/correct specific values like "ACME CORP" or "JOHN DOE" if needed.
-
-### Phase 4: Final Artifact
-Go to **6. ARTIFACT**.
--   View the final **Service Agreement**.
--   Verify that your variables (*ACME CORP*, *JOHN DOE*) have been correctly injected into the standardized template.
-
----
-
-## 🔧 Technical Details
-
--   **Frontend Framework**: React + Vite
--   **Styling**: CSS Modules with a custom dark/neon theme.
--   **State Management**: React `useState` / `useEffect` for real-time race simulation.
--   **Simulation Logic**: Uses `setTimeout` with varied delays to mathematically model the time difference between `O(n)` (Linear/CPU) and `O(n/k)` (Parallel/GPU) complexity.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for any enhancements, bug fixes, or new features (like *Quantum Processing Mode* 😉).
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Phase 3: Verification
+Check **5. VARIABLES** and **6. ARTIFACT**.
+-   *Action*: Verify that `ACME CORP` and `JOHN DOE` were correctly extracted and placed into the final `Service Agreement`.
 
 ---
 
